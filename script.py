@@ -7,7 +7,7 @@ link = "https://kbiz.kasikornbank.com/menu/maker-management/maker-history"
 class WebScraper():
 
     def __init__(self) -> None:
-        pass
+        self.call_scraper()
 
     def call_scraper(self):
         while True:
