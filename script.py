@@ -15,4 +15,9 @@ class WebScraper():
             time.sleep(5)
 
     def scraper(self):
-        pass
+        response = requests.get(link)
+        content = response.text
+        print(content)
+
+if __name__ == "__main__":
+    scraper = WebScraper()
