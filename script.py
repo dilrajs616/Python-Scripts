@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import os
 import time
@@ -42,21 +42,39 @@ class WebScraper():
         print("Current URL : ", self.driver.current_url)
 
     def call_scraper(self):
-        old_transactions = self.scraper()
+        # old_transactions = self.scraper()
         
-        while True:
-            new_transactions = self.scraper()
-            if new_transactions != old_transactions:
-                old_transactions = new_transactions
-                self.send_alert()
-            time.sleep(5)
+        # while True:
+        #     new_transactions = self.scraper()
+        #     if new_transactions != old_transactions:
+        #         old_transactions = new_transactions
+        #         self.send_alert()
+        #     time.sleep(5)
+
+        self.scraper()
 
     def scraper(self):
-        time.sleep(5) 
-        pagination_wrapper = self.driver.find_element(By.CLASS_NAME, "paginations-wrapper")
-        pagination_text = pagination_wrapper.text
-        total_items = pagination_text.split()[-3]
-        return total_items
+        # time.sleep(5) 
+        # pagination_wrapper = self.driver.find_element(By.CLASS_NAME, "paginations-wrapper")
+        # pagination_text = pagination_wrapper.text
+        # total_items = pagination_text.split()[-3]
+        # return total_items
+
+        time.sleep(5)  # Adjust the sleep duration as needed
+
+        # Get the page source
+        page_source = self.driver.page_source
+
+        # Create a BeautifulSoup object
+        soup = BeautifulSoup(page_source, 'html.parser')
+
+        # Find the div element with class non-table-03
+        div_non_table_03 = soup.find('div', class_='non-table-03')
+
+        if div_non_table_03:
+            # Print the content of the div
+            print("Data from div with class non-table-03:")
+            print(div_non_table_03.get_text())
     
     def send_alert(self):
         # Write code to send alerts however you like
