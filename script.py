@@ -14,7 +14,7 @@ class WebScraper():
         self.get_variables()
         self.get_driver()
         self.login()
-        self.call_scraper()
+        self.scraper()
 
     def get_variables(self):
         load_dotenv()
@@ -42,13 +42,20 @@ class WebScraper():
         self.driver.get(self.maker_link)
         print("Current URL : ", self.driver.current_url)
 
-    def call_scraper(self):
-        while True:
-            self.scraper()
-            time.sleep(5)
+    # def call_scraper(self):
+    #     while True:
+    #         self.scraper()
+    #         time.sleep(5)
 
     def scraper(self):
-        print("working")
+        time.sleep(5)
+
+        pagination_wrapper = self.driver.find_element(By.CLASS_NAME, "paginations-wrapper")
+
+        print("Pagination Wrapper Content:")
+        print(pagination_wrapper.text)
+
+
 
 if __name__ == "__main__":
     scraper = WebScraper()
