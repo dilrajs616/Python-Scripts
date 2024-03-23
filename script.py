@@ -18,15 +18,16 @@ class WebScraper():
 
     def get_variables(self):
         load_dotenv()
-        self.link = os.getenv('LINK')
+        self.auth_link = os.getenv('AUTH_LINK')
         self.driver_path = os.getenv("DRIVER_PATH")
         self.username = os.getenv("USERNAME")
         self.password = os.getenv("PASSWORD")
+        self.maker_link = os.getenv("MAKER_LINK")
 
     def get_driver(self):
         self.service = Service(executable_path=self.driver_path)
         self.driver = webdriver.Chrome(service=self.service)
-        self.driver.get(self.link)
+        self.driver.get(self.auth_link)
         self.driver.implicitly_wait(10)
     
     def login(self):
@@ -35,8 +36,11 @@ class WebScraper():
 
         username_field.send_keys(self.username)
         password_field.send_keys(self.password)
-
         password_field.send_keys(Keys.RETURN)
+
+        time.sleep(2)
+        self.driver.get(self.maker_link)
+        print("Current URL : ", self.driver.current_url)
 
     def call_scraper(self):
         while True:
