@@ -14,7 +14,7 @@ class WebScraper():
         self.get_variables()
         self.get_driver()
         self.login()
-        self.scraper()
+        self.call_scraper()
 
     def get_variables(self):
         load_dotenv()
@@ -42,19 +42,26 @@ class WebScraper():
         self.driver.get(self.maker_link)
         print("Current URL : ", self.driver.current_url)
 
-    # def call_scraper(self):
-    #     while True:
-    #         self.scraper()
-    #         time.sleep(5)
+    def call_scraper(self):
+        old_transactions = self.scraper()
+        
+        while True:
+            new_transactions = self.scraper()
+            if new_transactions != old_transactions:
+                old_transactions = new_transactions
+                self.send_alert()
+            time.sleep(5)
 
     def scraper(self):
-        time.sleep(5)
-
+        time.sleep(5) 
         pagination_wrapper = self.driver.find_element(By.CLASS_NAME, "paginations-wrapper")
-
-        print("Pagination Wrapper Content:")
-        print(pagination_wrapper.text)
-
+        pagination_text = pagination_wrapper.text
+        total_items = pagination_text.split()[-3]
+        return total_items
+    
+    def send_alert(self):
+        # Write code to send alerts however you like
+        pass
 
 
 if __name__ == "__main__":
